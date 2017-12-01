@@ -15,18 +15,18 @@ const styles = {
   }
 };
 
-const Field = ({ classes, title, type, vertical }) => (
+const Field = ({ classes, title, type, vertical, value, onChange }) => (
   <div className={vertical ? classes.vertical : classes.horizontal}>
     <label className={classes.title}>{title}</label>
-    <InputText type={type} />
+    <InputText type={type} onChange={onChange} value={value} />
   </div>
 );
 
 Field.propTypes = {
   classes: T.object.isRequired,
   title: T.string,
-  type: InputText.propTypes.type,
   vertical: T.bool.isRequired,
+  ...InputText.propTypes,
 };
 
 export default withStyles(styles)(Field);

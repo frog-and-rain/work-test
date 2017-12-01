@@ -63,7 +63,7 @@ const toolbarStyles = theme => ({
 });
 
 let TableInfoToolbar = props => {
-  const { classes, onEditing, editing, handleUpdate } = props;
+  const { classes, onEditing, editing, handleUpdate, closeEditing } = props;
 
   const ButtonIcon = styled.button`
     font-size: 13px;
@@ -128,7 +128,7 @@ let TableInfoToolbar = props => {
           </div>
         ) : (
           <div className={classes.actions}>
-            <BlockButton onClick={onEditing}>
+            <BlockButton onClick={closeEditing}>
               Cancel
             </BlockButton>
 
@@ -146,6 +146,8 @@ let TableInfoToolbar = props => {
 TableInfoToolbar.propTypes = {
   classes: T.object.isRequired,
   onEditing: T.func.isRequired,
+  closeEditing: T.func.isRequired,
+  handleUpdate: T.func.isRequired,
   editing: T.bool.isRequired,
 };
 
@@ -165,58 +167,88 @@ const styles = theme => ({
 });
 
 class TableInfo extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-
+  constructor(props) {
+    super(props);
+    this.current = null;
     this.state = {
       editing: false,
+      users: props.users,
     };
 
     this.onEditing = this.onEditing.bind(this);
+    this.closeEditing = this.closeEditing.bind(this);
     this.handleUpdate = this.handleUpdate.bind(this);
+    this.setFirstName = this.setFirstName.bind(this);
+    this.setLastName = this.setLastName.bind(this);
+  }
+
+  setFirstName(data) {
+    const user = this.state.users.find(item => item.id === data.id);
+    user.firstName = data.value;
+    const newUsers = this.state.users.map(item => (item.id === data.id ? user : item));
+    this.setState({ users: newUsers });
+  }
+
+  setLastName(data) {
+    const user = this.state.users.find(item => item.id === data.id);
+    user.lastName = data.value;
+    const newUsers = this.state.users.map(item => (item.id === data.id ? user : item));
+    this.setState({ users: newUsers });
   }
 
   onEditing() {
-    this.setState({ editing: !this.state.editing });
+    this.current = this.state.users.map(item => ({...item}));
+    this.setState({ editing: true });
+  }
+
+  closeEditing() {
+    this.setState({ users: this.current, editing: false });
   }
 
   handleUpdate() {
-    console.log(this.props.updateInfo);
+    const { updateInfo } = this.props;
+    updateInfo(this.state.users);
+    this.setState({ editing: false });
   }
 
   render() {
-    const { classes, users } = this.props;
+    const { classes } = this.props;
 
     return (
       <Paper className={classes.root}>
-        <TableInfoToolbar handleUpdate={this.handleUpdate} onEditing={this.onEditing} editing={this.state.editing} />
+        <TableInfoToolbar
+          handleUpdate={this.handleUpdate}
+          onEditing={this.onEditing}
+          closeEditing={this.closeEditing}
+          editing={this.state.editing}
+        />
 
         <div className={classes.tableWrapper}>
           <Table className={classes.table}>
             <TableInfoHead />
             <TableBody>
-              {users.map(n => {
+              {this.state.users.map(item => {
                 return (
                   <TableRow
                     tabIndex={-1}
-                    key={n.emailAddress}
+                    key={item.emailAddress}
                   >
                     <TableCell>
                       {this.state.editing ? (
-                        <InputText type='text' value={n.firstName} />
+                        <InputText type='text' value={item.firstName} onChange={this.setFirstName} info={item} />
                       ) : (
-                        n.firstName
+                        item.firstName
                       )}
                     </TableCell>
                     <TableCell>
                       {this.state.editing ? (
-                        <InputText type='text' value={n.lastName} />
+                        <InputText type='text' value={item.lastName} onChange={this.setLastName} info={item} />
                       ) : (
-                        n.lastName
+                        item.lastName
                       )}
                     </TableCell>
-                    <TableCell>{n.role}</TableCell>
-                    <TableCell>{n.emailAddress}</TableCell>
+                    <TableCell>{item.role}</TableCell>
+                    <TableCell>{item.emailAddress}</TableCell>
                   </TableRow>
                 );
               })}

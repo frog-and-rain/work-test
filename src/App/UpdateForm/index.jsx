@@ -8,7 +8,6 @@ const ButtonSubmit = styled.button`
   margin-top: 20px;
   width: 100px;
   background-color: #23c6c8;
-  border-color: #23c6c8;
   color: #FFFFFF;
   float: right;
   border-radius: 3px;
@@ -27,13 +26,17 @@ const ButtonSubmit = styled.button`
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-image: none;
   border: 1px solid transparent;
   white-space: normal !important;
   max-width: 100%;
   &:hover {
     background-color: #21b9bb;
   }
+`;
+
+const Error = styled.p`
+  color: palevioletred;
+  margin-top: 12px;
 `;
 
 const styles = {
@@ -54,9 +57,45 @@ const styles = {
   }
 };
 
+const initialForm = {
+  oldPassword: '',
+  newPassword: '',
+  cofPassword: '',
+};
+
 class UpdateForm extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      form: { ...initialForm },
+      error: '',
+    };
+
+    this.setForm = Object
+      .keys(initialForm)
+      .reduce((prev, key) => ({
+        ...prev,
+        [key]: this.setFormWKey.bind(this, key),
+      }), {});
+
+    this.submit = this.submit.bind(this);
+  }
+
+  setFormWKey(key, data) {
+    const nextForm = { ...this.state.form, [key]: data.value };
+    this.setState({ form: nextForm });
+  }
+
+  submit(e) {
+    e.preventDefault();
+
+    if (this.state.form.newPassword !== this.state.form.cofPassword) {
+      this.setState({ error: 'new password not same !' });
+    } else {
+      // call API update password
+      this.setState({ error: '' });
+      console.log(this.state.form);
+    }
   }
 
   render() {
@@ -65,10 +104,20 @@ class UpdateForm extends React.Component {
       <div className={classes.root}>
         <h3 className={classes.h3}>Change password</h3>
         <form className={classes.form}>
-          <Field vertical title="Old password" type="password" />
-          <Field vertical title="New password" type="password" />
-          <Field vertical title="Confirm password" type="password" />
-          <ButtonSubmit>Submit</ButtonSubmit>
+          <Field
+            vertical title="Old password" type="password"
+            value={this.state.form.oldPassword} onChange={this.setForm.oldPassword}
+          />
+          <Field
+            vertical title="New password" type="password"
+            value={this.state.form.newPassword} onChange={this.setForm.newPassword}
+          />
+          <Field
+            vertical title="Confirm password" type="password"
+            value={this.state.form.cofPassword} onChange={this.setForm.cofPassword}
+          />
+          {this.state.error ? <Error>{this.state.error}</Error> : null}
+          <ButtonSubmit onClick={this.submit}>Submit</ButtonSubmit>
         </form>
       </div>
     );

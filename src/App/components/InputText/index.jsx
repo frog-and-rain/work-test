@@ -13,8 +13,8 @@ class InputText extends React.Component {
   }
 
   onChange(e) {
-    const value = e.target.value;
-    this.setState({ value });
+    const { onChange, info } = this.props;
+    onChange({ id: !!info && info.id, value: e.target.value });
   }
 
   render() {
@@ -31,6 +31,8 @@ class InputText extends React.Component {
 InputText.propTypes = {
   type: View.propTypes.type,
   value: T.string,
+  info: T.object,
+  onChange: T.func,
 };
 
 export default InputText;
