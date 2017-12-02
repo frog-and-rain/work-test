@@ -1,7 +1,7 @@
 /**
  * Created by linhv on 12/1/2017.
  */
-import {createPayload, createReducer} from 'App/common/ReduxUtils';
+import { createPayload, createReducer } from 'App/common/ReduxUtils';
 
 // import service
 

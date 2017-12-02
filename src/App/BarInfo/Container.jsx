@@ -7,7 +7,7 @@ const styles = {
   row: {
     minHeight: '20px',
     padding: '10px',
-    marginBottom: '20px',
+    margin: '20px 0',
     backgroundColor: '#f5f5f5',
     border: '1px solid #e3e3e3',
     borderRadius: '1px',

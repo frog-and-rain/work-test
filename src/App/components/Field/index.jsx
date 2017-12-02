@@ -8,6 +8,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
   },
+  horizontal: {},
   title: {
     fontWeight: 'bold',
     marginTop: '20px',
