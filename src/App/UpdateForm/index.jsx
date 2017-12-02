@@ -3,9 +3,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { withStyles } from 'material-ui/styles';
 import Field from 'App/components/Field';
+import Paper from 'material-ui/Paper';
 
 const ButtonSubmit = styled.button`
-  margin-top: 20px;
+  margin: 25px 0;
   width: 100px;
   background-color: #23c6c8;
   color: #FFFFFF;
@@ -42,10 +43,11 @@ const Error = styled.p`
 const styles = {
   root: {
     width: '100%',
+    height: '100%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: '25px',
+    margin: '25px 0',
   },
   form: {
     display: 'block',
@@ -101,7 +103,7 @@ class UpdateForm extends React.Component {
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <Paper className={classes.root}>
         <h3 className={classes.h3}>Change password</h3>
         <form className={classes.form}>
           <Field
@@ -119,7 +121,7 @@ class UpdateForm extends React.Component {
           {this.state.error ? <Error>{this.state.error}</Error> : null}
           <ButtonSubmit onClick={this.submit}>Submit</ButtonSubmit>
         </form>
-      </div>
+      </Paper>
     );
   }
 }
