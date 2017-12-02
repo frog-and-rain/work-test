@@ -29,13 +29,7 @@ export const initialState = {
     role: 'normal',
     emailAddress: 'frog_crazy@mail.mail',
   }],
-  current: {
-    id: 1,
-    firstName: 'frog',
-    lastName: 'crazy',
-    role: 'normal',
-    emailAddress: 'frog_crazy@mail.mail',
-  }
+  current: 1,
 };
 
 export default createReducer(initialState, {

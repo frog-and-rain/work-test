@@ -47,7 +47,7 @@ const styles = {
 
 const BarInfo = (props) => {
   const { classes, user } = props;
-  console.log(user.firstName[0]);
+  console.log(user);
   return (
     <div className={classes.row}>
       <Avatar alt={`${user.firstName} ${user.lastName}`} src="/" className={classes.bigAvatar} />
