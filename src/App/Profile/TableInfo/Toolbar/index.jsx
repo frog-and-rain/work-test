@@ -103,7 +103,7 @@ const ToolbarProfile = props => {
 
             <SaveButton onClick={handleUpdate}>
               <FaFloppyO />
-              &sSave
+              Save
             </SaveButton>
 
           </div>
