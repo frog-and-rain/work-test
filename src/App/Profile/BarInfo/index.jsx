@@ -2,8 +2,7 @@ import Container from './Container';
 import { connect } from 'react-redux';
 
 const mapStateToProps = state => {
-  const user = state.user.list.find(item => item.id === state.user.current);
-  return { user };
+  return { users: state.user.list, current: state.user.current };
 };
 
 export default connect(mapStateToProps)(Container);

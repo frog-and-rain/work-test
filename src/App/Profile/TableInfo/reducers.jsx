@@ -36,7 +36,7 @@ export default createReducer(initialState, {
   [actionTypes.update_info] : (state, payload) => {
     return {
       ...state,
-      list: payload,
+      list: payload.slice(),
     };
   }
 });

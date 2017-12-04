@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { withStyles } from 'material-ui/styles';
 import Avatar from 'material-ui/Avatar';
 
@@ -46,8 +45,12 @@ const styles = {
 };
 
 const BarInfo = (props) => {
-  const { classes, user } = props;
-  console.log(user);
+  const { classes, users, current } = props;
+  const index = users.findIndex(item => item.id === current);
+  const user = users[index];
+  if (!user) {
+    return null;
+  }
   return (
     <div className={classes.row}>
       <Avatar alt={`${user.firstName} ${user.lastName}`} src="/" className={classes.bigAvatar} />
@@ -59,10 +62,6 @@ const BarInfo = (props) => {
       </div>
     </div>
   );
-};
-
-BarInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(BarInfo);

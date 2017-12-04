@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import { withStyles } from 'material-ui/styles';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
+import FaBan from 'react-icons/lib/fa/ban';
+import FaFloppyO from 'react-icons/lib/fa/floppy-o';
+import FaPencil from 'react-icons/lib/fa/pencil';
 
 const ButtonIcon = styled.button`
     font-size: 13px;
@@ -16,7 +19,6 @@ const ButtonIcon = styled.button`
     display: flex;
     flex-direction: row;
     alight-item: center;
-    justify-content: center;
     cursor: pointer;
   `;
 
@@ -88,17 +90,20 @@ const ToolbarProfile = props => {
         !editing ? (
           <div className={classes.actions}>
             <EditButton onClick={onEditing}>
+              <FaPencil />
               Edit
             </EditButton>
           </div>
         ) : (
           <div className={classes.actions}>
             <BlockButton onClick={closeEditing}>
+              <FaBan />
               Cancel
             </BlockButton>
 
             <SaveButton onClick={handleUpdate}>
-              Save
+              <FaFloppyO />
+              &sSave
             </SaveButton>
 
           </div>

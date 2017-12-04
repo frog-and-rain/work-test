@@ -2,7 +2,7 @@ import {applyMiddleware, combineReducers, createStore} from "redux";
 // Using Thunk Middleware for Async Actions
 import thunk from "redux-thunk";
 
-import userReducer from 'App/TableInfo/reducers';
+import userReducer from 'App/Profile/TableInfo/reducers';
 
 // add app reducers here
 const appReduces = {

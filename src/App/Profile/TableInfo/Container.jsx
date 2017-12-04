@@ -1,22 +1,27 @@
 import React from 'react';
-import T from 'prop-types';
-import Table from 'material-ui/Table';
+
 import { withStyles } from 'material-ui/styles';
 import Paper from 'material-ui/Paper';
+import {
+  Grid, TableView, TableHeaderRow
+} from '@devexpress/dx-react-grid-material-ui';
+import InputText from 'App/components/InputText';
+import Toolbar from './Toolbar/index';
 
-import Toolbar from './Toolbar';
-import Header from './Header';
-import Body from './Body';
+const generateRows = (user, editing, setFirstName, setLastName) => {
+  if (!Array.isArray(user)) {
+    return null;
+  }
+  return user.map(item => (editing ? {
+    ...item,
+    firstName: <InputText value={item.firstName} onChange={setFirstName} info={item} />,
+    lastName: <InputText value={item.lastName} onChange={setLastName} info={item} />
+  } : item));
+};
 
 const styles = theme => ({
   root: {
     width: '100%',
-  },
-  table: {
-    width: '100%',
-  },
-  tableWrapper: {
-    overflowX: 'auto',
   },
 });
 
@@ -67,7 +72,7 @@ class TableInfo extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    const rows = generateRows(this.state.users, this.state.editing, this.setFirstName, this.setLastName);
     return (
       <Paper className={classes.root}>
         <Toolbar
@@ -76,24 +81,20 @@ class TableInfo extends React.Component {
           closeEditing={this.closeEditing}
           editing={this.state.editing}
         />
-
-        <div className={classes.tableWrapper}>
-          <Table className={classes.table}>
-            <Header />
-            <Body
-              users={this.state.users} editing={this.state.editing}
-              setFirstName={this.setFirstName} setLastName={this.setLastName}
-            />
-          </Table>
-        </div>
+        <Grid
+          rows={rows}
+          columns={[
+            { name: 'firstName', title: 'First name' },
+            { name: 'lastName', title: 'Last Name' },
+            { name: 'role', title: 'Role' },
+            { name: 'emailAddress', title: 'Email address' },
+          ]}>
+          <TableView />
+          <TableHeaderRow />
+        </Grid>
       </Paper>
     );
   }
 }
-
-TableInfo.propTypes = {
-  classes: T.object.isRequired,
-  users: T.array.isRequired,
-};
 
 export default withStyles(styles)(TableInfo);
