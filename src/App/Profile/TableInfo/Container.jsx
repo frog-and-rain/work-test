@@ -1,12 +1,11 @@
 import React from 'react';
-
-import { withStyles } from 'material-ui/styles';
-import Paper from 'material-ui/Paper';
 import {
   Grid, TableView, TableHeaderRow
 } from '@devexpress/dx-react-grid-material-ui';
 import InputText from 'App/components/InputText';
-import Toolbar from './Toolbar/index';
+import { toastr } from "react-redux-toastr";
+import Action from './Action';
+import Box from 'App/components/Box';
 
 const generateRows = (user, editing, setFirstName, setLastName) => {
   if (!Array.isArray(user)) {
@@ -19,11 +18,20 @@ const generateRows = (user, editing, setFirstName, setLastName) => {
   } : item));
 };
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-  },
-});
+const validate = (data) => {
+  const itemFail = data.find(item => !item.firstName || !item.lastName);
+
+  if (itemFail) {
+    if (!itemFail.firstName) {
+      return `First name can't be blank`;
+    }
+    if (!itemFail.lastName) {
+      return `Last name can't be blank`;
+    }
+  }
+
+  return '';
+};
 
 class TableInfo extends React.Component {
   constructor(props) {
@@ -66,21 +74,25 @@ class TableInfo extends React.Component {
 
   handleUpdate() {
     const { updateInfo } = this.props;
-    updateInfo(this.state.users);
-    this.setState({ editing: false });
+    const message = validate(this.state.users);
+    if (message) {
+      toastr.error('Error', message);
+    } else {
+      updateInfo(this.state.users);
+      this.setState({ editing: false });
+    }
   }
 
   render() {
-    const { classes } = this.props;
     const rows = generateRows(this.state.users, this.state.editing, this.setFirstName, this.setLastName);
+    const ActionRight = (
+      <Action
+        handleUpdate={this.handleUpdate} onEditing={this.onEditing}
+        closeEditing={this.closeEditing} editing={this.state.editing}
+      />
+    );
     return (
-      <Paper className={classes.root}>
-        <Toolbar
-          handleUpdate={this.handleUpdate}
-          onEditing={this.onEditing}
-          closeEditing={this.closeEditing}
-          editing={this.state.editing}
-        />
+      <Box title="Profile" action={ActionRight}>
         <Grid
           rows={rows}
           columns={[
@@ -92,9 +104,9 @@ class TableInfo extends React.Component {
           <TableView />
           <TableHeaderRow />
         </Grid>
-      </Paper>
+      </Box>
     );
   }
 }
 
-export default withStyles(styles)(TableInfo);
+export default TableInfo;

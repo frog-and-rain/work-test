@@ -22,17 +22,15 @@ class InputText extends React.Component {
       <View
         onChange={this.onChange}
         value={this.props.value ? this.props.value : this.state.value}
-        type={this.props.type}
+        type={this.props.type} required={this.props.required}
       />
     );
   }
 }
 
 InputText.propTypes = {
-  type: View.propTypes.type,
-  value: T.string,
+  ...View.propTypes,
   info: T.object,
-  onChange: T.func,
 };
 
 export default InputText;

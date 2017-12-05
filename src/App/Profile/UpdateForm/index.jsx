@@ -1,52 +1,8 @@
-import T from 'prop-types';
 import React from 'react';
-import styled from 'styled-components';
-import { withStyles } from 'material-ui/styles';
-import Field from 'App/components/Field';
-import Paper from 'material-ui/Paper';
+import { toastr } from "react-redux-toastr";
+import Box from 'App/components/Box';
+import Form from './Form';
 
-const ButtonSubmit = styled.button`
-  margin: 25px 0;
-  width: 100px;
-  background-color: #23c6c8;
-  color: #FFFFFF;
-  float: right;
-  border-radius: 3px;
-  padding: 6px 12px;
-  font-size: 14px;
-  font-weight: normal;
-  line-height: 1.42857143;
-  cursor: pointer;
-  border: 1px solid transparent;
-  max-width: 100%;
-  &:hover {
-    background-color: #21b9bb;
-  }
-`;
-
-const Error = styled.p`
-  color: palevioletred;
-  margin-top: 12px;
-`;
-
-const styles = {
-  root: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    margin: '25px 0',
-  },
-  form: {
-    display: 'block',
-    width: '33.33%',
-    margin: '0 15px',
-  },
-  h3: {
-    color: '#676a6c',
-  }
-};
 
 const initialForm = {
   oldPassword: '',
@@ -59,7 +15,6 @@ class UpdateForm extends React.Component {
     super(props);
     this.state = {
       form: { ...initialForm },
-      error: '',
     };
 
     this.setForm = Object
@@ -79,44 +34,21 @@ class UpdateForm extends React.Component {
 
   submit(e) {
     e.preventDefault();
-
     if (this.state.form.newPassword !== this.state.form.cofPassword) {
-      this.setState({ error: 'new password not same !' });
+      toastr.error('Error', 'please verify passwords match !');
     } else {
       // call API update password
-      this.setState({ error: '' });
-      console.log(this.state.form);
+      toastr.success('Success', 'Password has updated !');
     }
   }
 
   render() {
-    const { classes } = this.props;
     return (
-      <Paper className={classes.root}>
-        <h3 className={classes.h3}>Change password</h3>
-        <form className={classes.form}>
-          <Field
-            vertical title="Old password" type="password"
-            value={this.state.form.oldPassword} onChange={this.setForm.oldPassword}
-          />
-          <Field
-            vertical title="New password" type="password"
-            value={this.state.form.newPassword} onChange={this.setForm.newPassword}
-          />
-          <Field
-            vertical title="Confirm password" type="password"
-            value={this.state.form.cofPassword} onChange={this.setForm.cofPassword}
-          />
-          {this.state.error ? <Error>{this.state.error}</Error> : null}
-          <ButtonSubmit onClick={this.submit}>Submit</ButtonSubmit>
-        </form>
-      </Paper>
+      <Box title="Change password">
+        <Form form={this.state.form} setForm={this.setForm} submit={this.submit} />
+      </Box>
     );
   }
 }
 
-UpdateForm.propTypes = {
-  classes: T.object.isRequired,
-};
-
-export default withStyles(styles)(UpdateForm);
+export default UpdateForm;

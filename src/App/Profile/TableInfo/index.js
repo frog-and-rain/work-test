@@ -1,6 +1,6 @@
 import Container from './Container';
 import { connect } from 'react-redux';
-import { actions } from './reducers';
+import { actions } from '../reducers';
 
 const mapStateToProps = state => ({
   users: state.user.list,
