@@ -4,6 +4,7 @@ const Container = styled.div`
   width: 20%;
 	display: flex;
 	flex-direction: column;
+	margin: 10px 0;
 	@media only screen and (max-width: 991px) {
     width: 100%;
   }
@@ -12,8 +13,13 @@ const Container = styled.div`
 
 const Label = styled.div`
   font-weight: bold;
-  margin: 20px 0 12px 0;
+  margin: 0 0 12px 0;
   width: 100%;
+`;
+
+const Error = styled.span`
+  color: #ea5d49;
+  margin-top: 10px;
 `;
 
 const Form = styled.form`
@@ -27,4 +33,4 @@ const Form = styled.form`
   }
 `;
 
-export { Container, Label, Form };
+export { Container, Label, Form, Error };

@@ -15,7 +15,7 @@ class UpdateForm extends React.Component {
     super(props);
     this.state = {
       form: { ...initialForm },
-      error: null,
+      error: '',
     };
 
     this.setForm = Object

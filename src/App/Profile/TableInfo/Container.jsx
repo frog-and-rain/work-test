@@ -1,29 +1,17 @@
 import React from 'react';
 import InputText from 'App/components/InputText';
-import { toastr } from "react-redux-toastr";
 import Action from './Action';
 import Box from 'App/components/Box';
-import { Container, Label, Form } from './components.styled';
+import { Container, Label, Form, Error } from './components.styled';
 
-const Field = ({ title, value, onChange, editing, edit }) => {
+const Field = ({ title, value, onChange, editing, edit, error }) => {
   return (
     <Container>
       <Label>{title}</Label>
       {!(editing && edit) ? value : <InputText value={value} onChange={onChange} />}
+      {error ? <Error>{error}</Error> : null}
     </Container>
   );
-};
-
-const validate = (user) => {
-  if (user) {
-    if (!user.firstName) {
-      return `First name can't be blank`;
-    }
-    if (!user.lastName) {
-      return `Last name can't be blank`;
-    }
-  }
-  return '';
 };
 
 class TableInfo extends React.Component {
@@ -33,6 +21,8 @@ class TableInfo extends React.Component {
     this.state = {
       editing: false,
       user: props.user,
+      errorFirstName: '',
+      errorLastName: '',
     };
 
     this.onEditing = this.onEditing.bind(this);
@@ -40,6 +30,7 @@ class TableInfo extends React.Component {
     this.handleUpdate = this.handleUpdate.bind(this);
     this.setFirstName = this.setFirstName.bind(this);
     this.setLastName = this.setLastName.bind(this);
+    this.validate = this.validate.bind(this);
   }
 
   setFirstName(data) {
@@ -63,14 +54,25 @@ class TableInfo extends React.Component {
 
   handleUpdate() {
     const { updateInfo } = this.props;
-    const message = validate(this.state.user);
-    if (message) {
-      toastr.error('Error', message);
-    } else {
+
+    if (this.validate(this.state.user)) {
+      this.setState({ errorFirstName: null, errorLastName: null});
       updateInfo(this.state.user);
-      this.setState({ editing: false });
     }
   }
+
+  validate(user) {
+    if (!user.firstName) {
+      this.setState({ errorFirstName: `First name can't be blank`, errorLastName: null});
+      return false;
+    }
+    if (!user.lastName) {
+      this.setState({ errorLastName: `Last name can't be blank`, errorFirstName: null});
+      return false;
+    }
+
+    return true;
+  };
 
   render() {
     const ActionRight = (
@@ -82,8 +84,14 @@ class TableInfo extends React.Component {
     return (
       <Box title="Profile" action={ActionRight}>
         <Form>
-          <Field title="First name" edit editing={this.state.editing} value={this.state.user.firstName} onChange={this.setFirstName} />
-          <Field title="Last name" edit editing={this.state.editing} value={this.state.user.lastName} onChange={this.setLastName} />
+          <Field
+            title="First name" edit editing={this.state.editing} error={this.state.errorFirstName}
+            value={this.state.user.firstName} onChange={this.setFirstName}
+          />
+          <Field
+            title="Last name" edit editing={this.state.editing} error={this.state.errorLastName}
+            value={this.state.user.lastName} onChange={this.setLastName}
+          />
           <Field title="Role" editing={this.state.editing} value={this.state.user.role} />
           <Field title="Email address" editing={this.state.editing} value={this.state.user.emailAddress} />
         </Form>
