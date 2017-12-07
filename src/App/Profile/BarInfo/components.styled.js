@@ -15,6 +15,10 @@ const Container = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+  @media only screen and (max-width: 397px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 
 const Avatar = styled.div`
@@ -35,6 +39,7 @@ const InfoImage = styled.span`
   line-height: normal;
   font-size: 50px;
   text-transform: uppercase;
+  word-spacing: -12px;
 `;
 
 const InfoText = styled.div`

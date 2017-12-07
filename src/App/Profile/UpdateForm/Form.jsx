@@ -1,9 +1,9 @@
 import T from 'prop-types';
 import React from 'react';
 import Field from 'App/components/Field';
-import { Container, ButtonSubmit, Form } from './component.styled';
+import { Container, ButtonSubmit, Form, Error } from './component.styled';
 
-const FormUpdate = ({ setForm, form, submit }) => (
+const FormUpdate = ({ setForm, form, submit, error }) => (
   <Container>
     <Form onSubmit={submit}>
       <Field
@@ -18,6 +18,9 @@ const FormUpdate = ({ setForm, form, submit }) => (
         title="Confirm password" type="password" required
         value={form.cofPassword} onChange={setForm.cofPassword}
       />
+
+      {error ? <Error>{error}</Error> : null}
+
       <ButtonSubmit type="submit">Submit</ButtonSubmit>
     </Form>
   </Container>
@@ -27,6 +30,7 @@ FormUpdate.propTypes = {
   form: T.object.isRequired,
   setForm: T.object.isRequired,
   submit: T.func.isRequired,
+  error: T.string.isRequired,
 };
 
 export default FormUpdate;

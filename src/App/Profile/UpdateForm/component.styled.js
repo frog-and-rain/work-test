@@ -4,10 +4,11 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-  width: 100%;
+  width: calc(100% - 30px);
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 0 15px;
 `;
 
 const ButtonSubmit = styled.button`
@@ -31,6 +32,13 @@ const ButtonSubmit = styled.button`
 
 const Form = styled.form`
   width: 33.33%;
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
-export { Container, ButtonSubmit, Form };
+const Error = styled.span`
+  color: #ea5d49;
+`;
+
+export { Container, ButtonSubmit, Form, Error };

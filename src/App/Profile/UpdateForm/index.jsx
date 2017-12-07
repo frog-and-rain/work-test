@@ -15,6 +15,7 @@ class UpdateForm extends React.Component {
     super(props);
     this.state = {
       form: { ...initialForm },
+      error: null,
     };
 
     this.setForm = Object
@@ -35,9 +36,10 @@ class UpdateForm extends React.Component {
   submit(e) {
     e.preventDefault();
     if (this.state.form.newPassword !== this.state.form.cofPassword) {
-      toastr.error('Error', 'please verify passwords match !');
+      this.setState({ error: 'please verify passwords match !'});
     } else {
       // call API update password
+      console.log(this.state.form);
       toastr.success('Success', 'Password has updated !');
     }
   }
@@ -45,7 +47,7 @@ class UpdateForm extends React.Component {
   render() {
     return (
       <Box title="Change password">
-        <Form form={this.state.form} setForm={this.setForm} submit={this.submit} />
+        <Form error={this.state.error} form={this.state.form} setForm={this.setForm} submit={this.submit} />
       </Box>
     );
   }

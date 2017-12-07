@@ -19,21 +19,17 @@ export const actions = {
 };
 
 export const initialState = {
-  list: [{
-    id: 1,
-    firstName: 'frog',
-    lastName: 'crazy',
-    role: 'normal',
-    emailAddress: 'frog_crazy@mail.mail',
-  }],
-  current: 1,
+  id: 1,
+  firstName: 'frog',
+  lastName: 'crazy',
+  role: 'normal',
+  emailAddress: 'frog_crazy@mail.mail',
 };
 
 export default createReducer(initialState, {
   [actionTypes.update_info] : (state, payload) => {
     return {
-      ...state,
-      list: payload,
+      ...payload,
     };
   }
 });

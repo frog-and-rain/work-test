@@ -3,6 +3,7 @@
  */
 
 import styled from 'styled-components';
+import Paper from 'material-ui/Paper';
 
 const Header = styled.div`
   width: calc(100% - 30px);
@@ -28,10 +29,7 @@ const Body = styled.div`
   padding: 10px;
 `;
 
-const Container = styled.div`
-  background-color: #ffffff;
-  width: 100%;
-  height: 100%;
+const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

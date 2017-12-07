@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { actions } from '../reducers';
 
 const mapStateToProps = state => ({
-  users: state.user.list,
+  user: state.user,
 });
 
 const mapDispatchToProps = {
